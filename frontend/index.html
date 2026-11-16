@@ -4,14 +4,205 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lojinha</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="app.js" defer></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --fundo: #101512;
+      --texto: #f2f3e8;
+      --suave: #afbaaf;
+      --destaque: #c8ef86;
+      --borda: #303d32;
+      font-family: "DM Sans", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      background: radial-gradient(ellipse at 80% 0%, #233621, transparent 42%), var(--fundo);
+      color: var(--texto);
+    }
+
+    .container {
+      width: min(calc(100% - 2.5rem), 68rem);
+      margin-inline: auto;
+    }
+
+    .cabecalho {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 5rem;
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .marca {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .cabecalho a {
+      color: var(--destaque);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.3em;
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--destaque);
+      outline-offset: 6px;
+    }
+
+    .hero {
+      padding-block: clamp(3rem, 9vw, 7rem) clamp(2.5rem, 7vw, 5rem);
+      animation: entrar 550ms ease-out both;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 12ch;
+      font: 400 clamp(3.75rem, 10vw, 8rem)/0.9 "Instrument Serif", Georgia, serif;
+      letter-spacing: -0.035em;
+    }
+
+    h1 em { color: var(--destaque); }
+
+    .hero p {
+      margin: 1.5rem 0 0;
+      color: var(--suave);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+    }
+
+    .vitrine {
+      margin-bottom: 3rem;
+      padding: clamp(1.25rem, 4vw, 2.5rem);
+      border: 1px solid var(--borda);
+      border-radius: 1.5rem;
+      background: #171e18;
+      scroll-margin-top: 1rem;
+    }
+
+    .vitrine h2 {
+      margin: 0 0 1.25rem;
+      font-size: 1.35rem;
+      letter-spacing: -0.035em;
+    }
+
+    #status { color: var(--suave); }
+    #status:empty { margin: 0; }
+
+    #produtos {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.875rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #produtos li {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.5rem;
+      min-height: 8rem;
+      padding: 1.25rem;
+      border: 1px solid #3c4b3d;
+      border-radius: 1rem;
+      background: #202a21;
+      overflow-wrap: anywhere;
+      font-size: 1.1rem;
+      font-weight: 600;
+      animation: entrar 450ms ease-out both;
+    }
+
+    #produtos li::before {
+      content: "";
+      width: 1.5rem;
+      height: 2px;
+      background: var(--destaque);
+    }
+
+    #produtos li:nth-child(2) { animation-delay: 75ms; }
+    #produtos li:nth-child(3) { animation-delay: 150ms; }
+
+    @keyframes entrar {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+      .vitrine {
+        background:
+          radial-gradient(
+            22rem circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
+            rgb(168 227 104 / var(--brilho, 0)),
+            transparent 100%
+          ),
+          #171e18;
+      }
+
+      .vitrine:hover { --brilho: 0.16; }
+
+      #produtos li {
+        transition: transform 180ms ease, border-color 180ms ease;
+      }
+
+      #produtos li:hover {
+        transform: translateY(-4px);
+        border-color: #9ab875;
+      }
+    }
+
+    @media (max-width: 42rem) {
+      #produtos { grid-template-columns: 1fr; }
+      #produtos li { min-height: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero, #produtos li { animation: none; }
+    }
+  </style>
 </head>
 <body>
-  <main>
-    <h1>Lojinha</h1>
-    <p id="status" role="status">Carregando produtos…</p>
-    <ul id="produtos"></ul>
+  <header class="cabecalho container">
+    <span class="marca">Lojinha</span>
+    <a href="#catalogo">Ver produtos ↓</a>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Papelaria para o <em>dia a dia.</em></h1>
+      <p>Cadernos, canetas e mochilas para estudo e trabalho.</p>
+    </section>
+
+    <section class="vitrine" id="catalogo" aria-labelledby="titulo-catalogo">
+      <h2 id="titulo-catalogo">Produtos</h2>
+      <p id="status" role="status">Carregando produtos…</p>
+      <ul id="produtos"></ul>
+    </section>
   </main>
+
+  <script>
+    const vitrine = document.querySelector('.vitrine');
+    const aceitaSpotlight = window.matchMedia(
+      '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'
+    );
+
+    vitrine.addEventListener('pointermove', (evento) => {
+      if (!aceitaSpotlight.matches || evento.pointerType === 'touch') return;
+
+      const area = vitrine.getBoundingClientRect();
+      vitrine.style.setProperty('--cursor-x', `${evento.clientX - area.left}px`);
+      vitrine.style.setProperty('--cursor-y', `${evento.clientY - area.top}px`);
+    });
+  </script>
 </body>
 </html>
