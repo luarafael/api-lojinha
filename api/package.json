@@ -1,0 +1,22 @@
+{
+  "name": "api-lojinha",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "migrate": "node --env-file-if-exists=.env migrate.js",
+    "test": "node --test test/preco.test.js",
+    "test:integration": "node --env-file-if-exists=.env.test --test test/produtos.test.js",
+    "lint": "cd .. && api\\node_modules\\.bin\\eslint.cmd ."
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^17.14.0"
+  }
+}
